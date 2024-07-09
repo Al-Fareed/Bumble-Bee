@@ -1,10 +1,15 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { NextRequest } from "next/server";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-const page = ({ params }: any, request:NextRequest) => {
+
+const Page = ({ params }: any) => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [id, setId] = useState("");
+
   const router = useRouter();
+
   async function handleLogout() {
     try {
       const response = await axios.get("../../api/user/logout");
@@ -14,13 +19,28 @@ const page = ({ params }: any, request:NextRequest) => {
       console.log(error.message);
     }
   }
-    
+  let i = 0;
+  useEffect(() => {
+    async function getUserData() {
+      try {
+        const response = await axios.get("../../api/user/me");
+        setName(response.data.data.username);
+        setId(response.data.data._id);
+        setEmail(response.data.data.email);
+        console.log("I was called",++i);
+        
+      } catch (error) {
+        console.log("Error fetching user data");
+      }
+    }
+    getUserData();
+  }, []);
 
   return (
     <div className="flex flex-col justify-center text-center">
       Id {params.id}
-      <span>Name : </span>
-      <span>Email : </span>
+      <span>Name: {name}</span>
+      <span>Email: {email}</span>
       <hr />
       <div className="flex mr-auto ml-auto">
         <button
@@ -34,4 +54,4 @@ const page = ({ params }: any, request:NextRequest) => {
   );
 };
 
-export default page;
+export default Page;
