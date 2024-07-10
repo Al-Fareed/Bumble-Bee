@@ -11,8 +11,7 @@ const page = () => {
   });
   async function submitForm() {
       try {
-       const response = await axios.post("../api/user/login", user)
-       console.log("Logged In Successfully!",response);
+       await axios.post("../api/user/login", user)
        router.push(`/chat`)
    } catch (error) {
     console.log("Couldn't sign");

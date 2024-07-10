@@ -12,8 +12,7 @@ const Page = () => {
 
   async function handleLogout() {
     try {
-      const response = await axios.get("../../api/user/logout");
-      console.log(response, "\n Logged out successfully!");
+      await axios.get("../../api/user/logout");
       router.push("/login");
     } catch (error: any) {
       console.log(error.message);
@@ -27,7 +26,6 @@ const Page = () => {
         setName(response.data.data.username);
         setId(response.data.data._id);
         setEmail(response.data.data.email);
-        console.log("I was called",++i);
         
       } catch (error) {
         console.log("Error fetching user data");
