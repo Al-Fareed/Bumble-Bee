@@ -13,7 +13,7 @@ const page = () => {
       try {
        const response = await axios.post("../api/user/login", user)
        console.log("Logged In Successfully!",response);
-       router.push(`/profile/${response.data.id}`)
+       router.push(`/chat`)
    } catch (error) {
     console.log("Couldn't sign");
       }

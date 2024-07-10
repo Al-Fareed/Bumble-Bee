@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-const Page = ({ params }: any) => {
+const Page = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [id, setId] = useState("");
@@ -38,7 +38,7 @@ const Page = ({ params }: any) => {
 
   return (
     <div className="flex flex-col justify-center text-center">
-      Id {params.id}
+      Id {id}
       <span>Name: {name}</span>
       <span>Email: {email}</span>
       <hr />
