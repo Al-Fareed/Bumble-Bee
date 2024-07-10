@@ -1,3 +1,7 @@
+### Bumble-Bee
+Next JS chat completion application integrated with langchain and Open AI.
+This project is to learn NEXT JS and its basics
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
