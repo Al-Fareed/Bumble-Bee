@@ -15,8 +15,7 @@ const page = () => {
    async function submitForm() {
      try {
        setProcessing(true);
-       const response = await axios.post("../api/user/signup", user);
-         console.log("Sucesss..!", response);
+        await axios.post("../api/user/signup", user);
           router.push("/login");
          toast.success("User has been created successfully");
         } catch (error: any) {

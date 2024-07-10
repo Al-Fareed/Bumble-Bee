@@ -10,10 +10,8 @@ export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
     const { email, password } = reqBody;
-    console.log("Request Body ", reqBody);
 
     const user = await User.findOne({ email });
-    console.log(user ? "Found user" : "Not found", user);
 
     if (!user) {
       return NextResponse.json(
@@ -34,13 +32,15 @@ export async function POST(request: NextRequest) {
       email: user.email,
     };
 
-    const token = await jwt.sign(tokenBody, "mySecretToken", {
+    const token = await jwt.sign(tokenBody, process.env.TOKEN!, {
       expiresIn: "1d",
     });
     const response = NextResponse.json(
       {
         message: "Signed In successfully",
         id: user._id,
+        username: user.username,
+        email: user.email,
       },
       { status: 200 }
     );
