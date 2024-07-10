@@ -9,7 +9,10 @@ const Page = () => {
     aiResponse: string;
   }
   const { completion, input, handleInputChange, handleSubmit, setInput } =
-    useCompletion();
+    useCompletion({
+      onResponse: () => {
+        setInput("");
+    }});
   return (
     <div className="">
       <div className="flex m-2">
@@ -20,7 +23,7 @@ const Page = () => {
       </div>
       <hr className="mt-2" />
       <div>
-        <div className="w-96 max-h-screen min-h-80 mr-auto ml-auto mt-3 rounded p-4 overflow-scroll mb-60 ">
+        <div style={{ maxHeight: "78vh",width:"60vw"}} className=" mr-auto ml-auto mt-3 rounded p-4 overflow-scroll mb-60 ">
           {completion}
         </div>
         <div className="fixed bottom-0 left-0 right-0 mx-auto w-full flex justify-center p-3">
