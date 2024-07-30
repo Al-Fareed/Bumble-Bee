@@ -1,27 +1,27 @@
 "use client";
 import React, { useState } from "react";
-import axios  from 'axios'
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-const page = () => {
-    const router = useRouter();
+const Page = () => {
+  const router = useRouter();
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
-  async function submitForm() {
-      try {
-       await axios.post("../api/user/login", user)
-       router.push(`/chat`)
-   } catch (error) {
-    console.log("Couldn't sign");
-      }
-      finally {
-          setUser({
-            email: "",
-            password: "",
-          });
-      }
+  async function submitForm(e:any) {
+    e.preventDefault();
+    try {
+      await axios.post("../api/user/login", user);
+      router.push(`/chat`);
+    } catch (error) {
+      console.log("Couldn't sign");
+    } finally {
+      setUser({
+        email: "",
+        password: "",
+      });
+    }
   }
   return (
     <div className="h-screen flex items-center justify-center flex-col gap-y-1 w-55 ">
@@ -47,10 +47,13 @@ const page = () => {
         Login
       </button>
       <span className="flex justify-between">
-              Create an &nbsp;<Link className="text-blue-700" href={"/signup"}>Account?</Link>
+        Create an &nbsp;
+        <Link className="text-blue-700" href={"/signup"}>
+          Account?
+        </Link>
       </span>
     </div>
   );
 };
 
-export default page;
+export default Page;
