@@ -8,41 +8,34 @@ interface ChatHistory {
   userPrompt: string;
   aiResponse: string;
 }
+
 const Page = () => {
   const [chats, setChats] = useState<ChatHistory[]>([]);
-
+  
   useEffect(() => {
-    document.title = "Bumble Bee";
-    const conversations = localStorage.getItem("chatHistory");
-    if (conversations) {
-      setChats(JSON.parse(conversations));
+    const savedChats = localStorage.getItem('chats');
+    if (savedChats) {
+      setChats(JSON.parse(savedChats));
     }
+    document.title = "Bumble Bee";
   }, []);
 
   const { completion, input, handleInputChange, handleSubmit, setInput } =
-  useCompletion({
-    onFinish: (prompt: string, completion: string) => {
-      setChats((prevChats) => {
-        // Check for duplicate entries
-        const isDuplicate = prevChats.some(chat => chat.userPrompt === input && chat.aiResponse === completion);
-
-        if (isDuplicate) {
-          return prevChats; // Return the existing state if duplicate
-        }
-
+    useCompletion({
+      onFinish: (prompt: string, completion: string) => {
         const newChats = [
-          ...prevChats,
+          ...chats,
           {
             userPrompt: input,
             aiResponse: completion,
           },
         ];
-        localStorage.setItem("chatHistory", JSON.stringify(newChats));
-        return newChats;
-      });
-      setInput("");
-    },
-  });
+        setChats(newChats);
+        setInput("");
+
+        localStorage.setItem('chats', JSON.stringify(newChats));
+      },
+    });
   return (
     <div className="">
       <div className="fixed w-full top-0 left-0 m-2 pr-3 z-50 bg-black h-max">
