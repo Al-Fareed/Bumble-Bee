@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import  axios  from 'axios'
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -10,6 +10,9 @@ const Page = () => {
     email: "",
     password: "",
   });
+  useEffect(()=>{
+    document.title='SignUp - Bumble Bee'
+  },[])
     const [processing, setProcessing] = useState(false);
     const router = useRouter();
    async function submitForm() {
@@ -32,7 +35,7 @@ const Page = () => {
       <input
         type="text"
         className="p-1 rounded text-black"
-        placeholder="name"
+        placeholder="Name"
         value={user.username}
         color="black"
         onChange={(e) => setUser({ ...user, username: e.target.value })}
@@ -40,20 +43,21 @@ const Page = () => {
       <input
         type="email"
         className="p-1 rounded text-black"
-        placeholder="email"
+        placeholder="Email"
         value={user.email}
         onChange={(e) => setUser({ ...user, email: e.target.value })}
       />
       <input
         type="password"
         className="p-1 rounded text-black"
-        placeholder="password"
+        placeholder="Password"
         value={user.password}
         onChange={(e) => setUser({ ...user, password: e.target.value })}
       />
       <button className="bg-gray-400 rounded p-1" onClick={submitForm}>
         {processing ? "Processing" : "Create Account"}
       </button>
+      <div>Already have an account? <Link className="text-blue-500" href={"/login"}>Login</Link> </div>
     </div>
   );
 };

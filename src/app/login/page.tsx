@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -9,6 +9,9 @@ const Page = () => {
     email: "",
     password: "",
   });
+  useEffect(()=>{
+    document.title='Login - Bumble Bee'
+  },[])
   async function submitForm(e:any) {
     e.preventDefault();
     try {
@@ -27,19 +30,19 @@ const Page = () => {
     <div className="h-screen flex items-center justify-center flex-col gap-y-1 w-55 ">
       <span className="text-5xl"> Log In</span>
       <span className="text-center">
-        username : hamera@koisi.com | passoword : 1234
+        username : userdemo@demo.com | password : 12345
       </span>
       <input
         className="p-1 rounded focus:outline-none text-black"
         type="text"
-        placeholder="email"
+        placeholder="Email"
         value={user.email}
         onChange={(e) => setUser({ ...user, email: e.target.value })}
       />
       <input
-        type="text"
+        type="password"
         className="p-1 rounded text-black"
-        placeholder="password"
+        placeholder="Password"
         value={user.password}
         onChange={(e) => setUser({ ...user, password: e.target.value })}
       />
