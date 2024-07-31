@@ -4,8 +4,13 @@ import Link from "next/link";
 import { useCompletion } from "ai/react";
 import { IoArrowUpCircleSharp } from "react-icons/io5";
 import { IoPersonCircleSharp } from "react-icons/io5";
+interface ChatHistory {
+  userPrompt: string;
+  aiResponse: string;
+}
 const Page = () => {
   const [chats, setChats] = useState<ChatHistory[]>([]);
+
   useEffect(() => {
     document.title = "Bumble Bee";
     const conversations = localStorage.getItem("chatHistory");
@@ -13,27 +18,31 @@ const Page = () => {
       setChats(JSON.parse(conversations));
     }
   }, []);
-  interface ChatHistory {
-    userPrompt: String;
-    aiResponse: String;
-  }
+
   const { completion, input, handleInputChange, handleSubmit, setInput } =
-    useCompletion({
-      onFinish: (prompt: string, completion: string) => {
-        setChats((prevChats) => {
-          const newChats = [
-            ...prevChats,
-            {
-              userPrompt: input,
-              aiResponse: completion,
-            },
-          ];
-          localStorage.setItem("chatHistory", JSON.stringify(newChats));
-          return newChats;
-        });
-        setInput("");
-      },
-    });
+  useCompletion({
+    onFinish: (prompt: string, completion: string) => {
+      setChats((prevChats) => {
+        // Check for duplicate entries
+        const isDuplicate = prevChats.some(chat => chat.userPrompt === input && chat.aiResponse === completion);
+
+        if (isDuplicate) {
+          return prevChats; // Return the existing state if duplicate
+        }
+
+        const newChats = [
+          ...prevChats,
+          {
+            userPrompt: input,
+            aiResponse: completion,
+          },
+        ];
+        localStorage.setItem("chatHistory", JSON.stringify(newChats));
+        return newChats;
+      });
+      setInput("");
+    },
+  });
   return (
     <div className="">
       <div className="fixed w-full top-0 left-0 m-2 pr-3 z-50 bg-black h-max">
