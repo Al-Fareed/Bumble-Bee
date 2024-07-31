@@ -5,27 +5,34 @@ import { useCompletion } from "ai/react";
 import { IoArrowUpCircleSharp } from "react-icons/io5";
 import { IoPersonCircleSharp } from "react-icons/io5";
 const Page = () => {
+  const [chats, setChats] = useState<ChatHistory[]>([]);
   useEffect(() => {
     document.title = 'Bumble Bee'
-  })
+    const conversations = localStorage.getItem('chatHistory');
+    if(conversations){
+      setChats(JSON.parse(conversations))
+    }
+  },[])
   interface ChatHistory {
     userPrompt: String;
     aiResponse: String;
   }
-  const [chats, setChats] = useState<ChatHistory[]>([]);
-  const { completion, input, handleInputChange, handleSubmit, setInput } =
-    useCompletion({
-      onFinish: (prompt: string, completion: string) => {
-        setChats((prevChats) => [
+  const { completion, input, handleInputChange, handleSubmit, setInput } = useCompletion({
+    onFinish: (prompt: string, completion: string) => {
+      setChats((prevChats) => {
+        const newChats = [
           ...prevChats,
           {
             userPrompt: input,
             aiResponse: completion,
           },
-        ]);
-        setInput("");
-      },
-    });
+        ];
+        localStorage.setItem('chatHistory', JSON.stringify(newChats));
+        return newChats;
+      });
+      setInput("");
+    },
+  });
   return (
     <div className="">
       <div className="flex m-2 h-full">
@@ -45,8 +52,8 @@ const Page = () => {
           style={{ maxHeight: "78vh", width: "60vw" }}
           className=" mr-auto ml-auto mt-3 rounded p-4 overflow-scroll mb-60 "
         >
-          {chats.map((chat) => (
-            <div className="flex flex-col">
+          {chats.map((chat,index) => (
+            <div key={index} className="flex flex-col">
               <div className="ml-auto mr-2 w-fit bg-white text-black rounded-2xl p-2 max-w-2xl">
                 {chat.userPrompt}
               </div>
