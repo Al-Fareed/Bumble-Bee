@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import  axios  from 'axios'
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -10,6 +10,9 @@ const Page = () => {
     email: "",
     password: "",
   });
+  useEffect(()=>{
+    document.title='SignUp - Bumble Bee'
+  },[])
     const [processing, setProcessing] = useState(false);
     const router = useRouter();
    async function submitForm() {

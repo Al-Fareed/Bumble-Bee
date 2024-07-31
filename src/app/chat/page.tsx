@@ -7,52 +7,59 @@ import { IoPersonCircleSharp } from "react-icons/io5";
 const Page = () => {
   const [chats, setChats] = useState<ChatHistory[]>([]);
   useEffect(() => {
-    document.title = 'Bumble Bee'
-    const conversations = localStorage.getItem('chatHistory');
-    if(conversations){
-      setChats(JSON.parse(conversations))
+    document.title = "Bumble Bee";
+    const conversations = localStorage.getItem("chatHistory");
+    if (conversations) {
+      setChats(JSON.parse(conversations));
     }
-  },[])
+  }, []);
   interface ChatHistory {
     userPrompt: String;
     aiResponse: String;
   }
-  const { completion, input, handleInputChange, handleSubmit, setInput } = useCompletion({
-    onFinish: (prompt: string, completion: string) => {
-      setChats((prevChats) => {
-        const newChats = [
-          ...prevChats,
-          {
-            userPrompt: input,
-            aiResponse: completion,
-          },
-        ];
-        localStorage.setItem('chatHistory', JSON.stringify(newChats));
-        return newChats;
-      });
-      setInput("");
-    },
-  });
+  const { completion, input, handleInputChange, handleSubmit, setInput } =
+    useCompletion({
+      onFinish: (prompt: string, completion: string) => {
+        setChats((prevChats) => {
+          const newChats = [
+            ...prevChats,
+            {
+              userPrompt: input,
+              aiResponse: completion,
+            },
+          ];
+          localStorage.setItem("chatHistory", JSON.stringify(newChats));
+          return newChats;
+        });
+        setInput("");
+      },
+    });
   return (
     <div className="">
-      <div className="flex m-2 h-full">
-        <span className="flex ml-auto mr-auto text-center text-3xl  font-bold">
-          Bumble Bee
-        </span>
-        <Link
-          className="bg-white text-black p-1 rounded-full"
-          href={"/profile"}
-        >
-          <IoPersonCircleSharp size={35} />
-        </Link>
+      <div className="fixed w-full top-0 left-0 m-2 pr-3 z-50 bg-black h-max">
+        <div className="flex items-center justify-between h-full">
+          <div className="w-1/3"></div>
+          <span className="text-center text-3xl font-bold mx-auto">
+            Bumble Bee
+          </span>
+          <div className="w-1/3 flex justify-end">
+            <Link
+              className="bg-white text-black p-1 rounded-full"
+              href="/profile"
+            >
+              <IoPersonCircleSharp size={28} />
+            </Link>
+          </div>
+        </div>
+        <hr />
       </div>
-      <hr className="mt-2" />
-      <div>
+
+      <div className="pt-8">
         <div
-          style={{ maxHeight: "78vh", width: "60vw" }}
-          className=" mr-auto ml-auto mt-3 rounded p-4 overflow-scroll mb-60 "
+          style={{ maxHeight: "84vh", width: "60vw" }}
+          className="mr-auto ml-auto mt-3 rounded p-4 overflow-scroll mb-60"
         >
-          {chats.map((chat,index) => (
+          {chats.map((chat, index) => (
             <div key={index} className="flex flex-col">
               <div className="ml-auto mr-2 w-fit bg-white text-black rounded-2xl p-2 max-w-2xl">
                 {chat.userPrompt}
@@ -63,9 +70,9 @@ const Page = () => {
             </div>
           ))}
         </div>
-        <div className="fixed bottom-0 left-0 right-0 mx-auto w-full flex justify-center p-3">
+        <div className="fixed bottom-0 left-0 right-0 mx-auto w-full h-fit flex justify-center p-3">
           <form
-            className="inline-flex w-6/12 "
+            className="inline-flex w-6/12 h-fit"
             onSubmit={(e) => {
               e.preventDefault();
               handleSubmit();
@@ -76,12 +83,12 @@ const Page = () => {
               value={input}
               onChange={handleInputChange}
               onKeyDown={(e: any) => {
-                e.key.toLowerCase() === "enter" && handleInputChange;
+                if (e.key.toLowerCase() === "enter") handleSubmit();
               }}
             />
             <button
               type="submit"
-              className="rounded p-2 bg-tranparent -m-16 text-black"
+              className="rounded p-2 bg-transparent h-fit -ml-16 text-black"
             >
               <IoArrowUpCircleSharp size={35} />
             </button>
